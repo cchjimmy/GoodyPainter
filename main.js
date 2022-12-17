@@ -1,6 +1,7 @@
 var maxStrokes;
 var maxBrushes;
 var brushes = [];
+var progressIndicator;
 
 function setup() {
   createCanvas();
@@ -18,13 +19,15 @@ function setup() {
   let maxBrushesInput = createInput(100, 'number');
 
   createDiv(`<br>Number of brush strokes (> 0):`);
-  let maxStrokesInput = createInput(7000000, 'number');
+  let maxStrokesInput = createInput(150000, 'number');
 
   createDiv(`<br>Brush alpha (0 - 255):`);
   let alphaInput = createInput(50, 'number');
 
-  createDiv(`<br>Brush size (> 0):`);
+  createDiv(`<br>Brush radius size (> 0):`);
   let sizeInput = createInput(10, 'number');
+
+  progressIndicator = createDiv();
 
   createDiv('<br>');
   createButton('Paint').mousePressed(() => {
@@ -51,5 +54,7 @@ function draw() {
     if (maxStrokes <= 0) break;
     brushes[i].update();
     maxStrokes--;
+
+    progressIndicator.elt.innerHTML = `<br>Progress (brushstrokes left): ${maxStrokes}`
   }
 }
