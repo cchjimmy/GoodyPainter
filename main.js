@@ -1,67 +1,55 @@
-var dir = './images';
-var name = 'aunt5AndGrandma';
-var extension = '.jpeg';
-var img;
-var quantized;
-var grayScaled;
-var contrasted;
-
-var maxStrokes = 1000000;
-var maxBrushes = 200;
+var maxStrokes;
+var maxBrushes;
 var brushes = [];
 
-function preload() {
-  img = loadImage(dir + '/' + name + extension);
-}
-
 function setup() {
-  // noStroke();
-
+  createCanvas();
   noFill();
-  // blendMode(MULTIPLY);
 
-  createCanvas(img.width, img.height);
-  background(100);
+  let img;
+  createDiv('Choose an image to paint');
+  createFileInput((file) => {
+    if (file.type == 'image') {
+      img = loadImage(file.data);
+    }
+  });
 
-  let alpha = 50;
+  createDiv(`<br>Number of brushes (> 0):`);
+  let maxBrushesInput = createInput(100, 'number');
 
-  grayScaled = grayScale(img);
-  contrasted = contrastImage(img, 200, 100);
-  // desaturated2 = desaturateImage(quantized, 155, 30);
-  quantized = quantizeImage(contrasted, 20, alpha);
+  createDiv(`<br>Number of brush strokes (> 0):`);
+  let maxStrokesInput = createInput(7000000, 'number');
 
-  // let size = 100;
-  // image(img, 0, 0, size, size);
-  // image(quantized, size * 1, 0, size, size);
-  // image(grayScaled, size * 2, 0, size, size);
-  // image(saturated, size * 3, 0, size, size);
+  createDiv(`<br>Brush alpha (0 - 255):`);
+  let alphaInput = createInput(50, 'number');
 
-  // let path = [];
-  // for (let i = 0; i < 5; i++) {
-  //   let pos = 100 + 100 * i;
-  //   path.push(new Vec2(pos, pos));
-  // }
-  // strokeWeight(10);
-  // stroke(255);
-  // beginShape();
-  // for (let i =0; i < path.length; i ++) {
-  //   vertex(path[i].x, path[i].y);
-  // }
-  // endShape();
+  createDiv(`<br>Brush size (> 0):`);
+  let sizeInput = createInput(10, 'number');
 
-  for (let i = 0; i < maxBrushes; i++) {
-    brushes[i] = new Brush();
-  }
+  createDiv('<br>');
+  createButton('Paint').mousePressed(() => {
+    if (!img) return;
+    brushes = [];
+    maxBrushes = parseInt(maxBrushesInput.value());
+    maxStrokes = parseInt(maxStrokesInput.value());
+
+    resizeCanvas(img.width, img.height)
+    background(100);
+
+    const grayScaled = grayScale(img); // for line path
+    // const contrasted = contrastImage(img);
+    const quantized = quantizeImage(img, 20); // for color
+
+    for (let i = 0; i < maxBrushes; i++) {
+      brushes[i] = new Brush(grayScaled, quantized, parseInt(alphaInput.value()), parseInt(sizeInput.value()));
+    }
+  });
 }
 
 function draw() {
-  if (maxStrokes >= 0) {
-    brushes.forEach(brush => { brush.update(); })
-  } else {
-    console.log("press s to save painting");
-    if (key == 's') {
-      saveCanvas(name + "Painting", extension);
-      noLoop();
-    }
+  for (let i = 0; i < brushes.length; i++) {
+    if (maxStrokes <= 0) break;
+    brushes[i].update();
+    maxStrokes--;
   }
 }
