@@ -51,13 +51,9 @@ function grayScale(img) {
 
       let average = averageColor([r, g, b]);
 
-      r = average;
-      g = average;
-      b = average;
-
-      newImage.pixels[index] = r;
-      newImage.pixels[index + 1] = g;
-      newImage.pixels[index + 2] = b;
+      newImage.pixels[index] = average;
+      newImage.pixels[index + 1] = average;
+      newImage.pixels[index + 2] = average;
       newImage.pixels[index + 3] = a;
     }
   }
@@ -95,7 +91,7 @@ function desaturateImage(img, threshold = 100, gain = 0) {
   return newImage;
 }
 
-function contrastImage(img, threshold = 100, gain = 0) {
+function contrastImage(img, threshold = 100, gain = 50) {
   let newImage = createImage(img.width, img.height);
   newImage.loadPixels();
   img.loadPixels();

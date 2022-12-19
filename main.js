@@ -18,7 +18,7 @@ function setup() {
   createDiv(`<br>Number of brushes (> 0):`);
   let maxBrushesInput = createInput(100, 'number');
 
-  createDiv(`<br>Number of brush strokes (> 0):`);
+  createDiv(`<br>Number of brushstrokes (> 0):`);
   let maxStrokesInput = createInput(150000, 'number');
 
   createDiv(`<br>Brush alpha (0 - 255):`);
@@ -40,8 +40,8 @@ function setup() {
     background(100);
 
     const grayScaled = grayScale(img); // for line path
-    // const contrasted = contrastImage(img);
-    const quantized = quantizeImage(img, 20); // for color
+    const contrasted = contrastImage(img);
+    const quantized = quantizeImage(contrasted, 10); // limits final image colors
 
     for (let i = 0; i < maxBrushes; i++) {
       brushes[i] = new Brush(grayScaled, quantized, parseInt(alphaInput.value()), parseInt(sizeInput.value()));

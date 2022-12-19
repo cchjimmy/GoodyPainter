@@ -7,12 +7,8 @@ class Brush {
 
     this.size = size;
     this.alpha = alpha;
-    this.averageColor;
     this.col;
-    this.cols = [];
     this.path = [];
-    this.paths = [];
-    this.angle;
 
     this.grayScaled = grayScaled;
     this.quantized = quantized;
@@ -27,9 +23,9 @@ class Brush {
 
   update() {
     for (let i = 0; i < this.lifeSpan; i++) {
-      this.averageColor = this.grayScaled.get(this.pos.x, this.pos.y);
-      this.angle = map(this.averageColor[0], 0, 255, TWO_PI, 0);
-      this.vel = this.vel.setDirn(this.angle);
+      let averageColor = this.grayScaled.get(this.pos.x, this.pos.y);
+      let angle = map(averageColor[0], 0, 255, TWO_PI, 0);
+      this.vel = this.vel.setDirn(angle);
       this.pos = this.pos.add(this.vel);
       this.path.push(new Vec2(Math.floor(this.pos.x), Math.floor(this.pos.y)));
     }

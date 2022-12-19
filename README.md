@@ -4,6 +4,7 @@ This program was written in Javascript with the aid of an external graphics libr
 ## Features
 * It can 'paint' an image provided by the user
 * Brush size, brush alpha, number of brushes and number of brushstrokes can be modified
+* Progress text showing brushstrokes left
 
 ## Limitations
 * Brush size and alpha are constant throughout the painting process (1 style)
